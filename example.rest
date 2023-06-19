@@ -1,0 +1,53 @@
+# 1. Create Post
+# Because we dont have any post yet, we will create one
+
+POST http://localhost:3000/posts HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Lorem Ipsum",
+    "content": "Lorem ipsum dolor sit amet"
+}
+
+###
+# 2. Get Post
+# Now we should have a post with ID 1, here how to get it
+
+GET http://localhost:3000/posts/3 HTTP/1.1
+
+###
+# 3. Ensure cache is working
+# Now if you try to get the same post again, you will get the same result with X-Cache header
+
+GET http://localhost:3000/posts/3 HTTP/1.1
+
+
+###
+# 4. Update Post
+# Now we will update the post with ID 1, this should invalidate our cache
+
+PUT http://localhost:3000/posts/3 HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Updated Lorem Ipsum",
+    "content": "Lorem ipsum dolor sit amet is now updated"
+}
+
+###
+# 5. Get Post
+# Now if you try to get the same post again, the data should be updated and X-Cache header should be MISS
+
+GET http://localhost:3000/posts/3 HTTP/1.1
+
+###
+# 6. Delete Post
+# Now we will delete the post with ID 1, this should invalidate our cache too
+
+DELETE http://localhost:3000/posts/3 HTTP/1.1
+
+###
+# 7. Get Post
+# Now if you try to get the same post again, the data should be deleted and X-Cache header should be MISS
+
+GET http://localhost:3000/posts/3 HTTP/1.1

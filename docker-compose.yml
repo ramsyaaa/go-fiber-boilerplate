@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  redis:
+    image: redis
+    # restart: always
+
+  db:
+    image: postgres
+    # restart: always
+    environment:
+      POSTGRES_USER: db_username
+      POSTGRES_PASSWORD: db_password
+      POSTGRES_DB: db_name
+
+  app:
+    build: .
+    # restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - db
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ""
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: db_username
+      DB_PASSWORD: db_password
+      DB_NAME: db_name
+      DB_TIMEZONE: Asia/Jakarta
